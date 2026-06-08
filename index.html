@@ -142,7 +142,7 @@
   <div class="hero">
     <div class="lead">Tu restaurante podría estar ganando</div>
     <div class="bignum" id="heroNum">$21,600</div>
-    <div class="unit">en ventas extra al mes</div>
+    <div class="unit">en ventas extra al mes &middot; <span id="curTag" style="color:var(--gold);font-weight:700;">MXN</span></div>
     <div class="yearline">Eso son <b id="yearNum">$259,200</b> al año</div>
     <div class="chip"><span class="dotg"></span><span id="chipText">Escenario pesimista · contando bajo</span></div>
   </div>
@@ -211,10 +211,10 @@
   <div class="section-label">Lo que cuesta vs. lo que deja</div>
 
   <div class="roi">
-    <div class="big" id="roiX">14&times;</div>
-    <div class="sub">Por cada <b>$1</b> que invierte, le regresa <b id="roiPer">$14</b> en ventas.<br>Se paga solo en <b id="roiDays">~2 días</b> del mes.</div>
-    <div class="priceday">Qartilla cuesta <b id="pdDay">$50</b> al día — <span id="pdCompare">menos que un platillo</span>.</div>
-    <div class="invest">Primer mes (con instalación): inviertes <b id="invFirst">$3,500</b> &rarr; te deja <b id="invNet" style="color:var(--gold-bright)">$18,100</b> de ventas extra. Del segundo mes en adelante, solo la mensualidad.</div>
+    <div class="big" id="roiX">4.3&times;</div>
+    <div class="sub">Por cada <b>$1</b> que invierte, le regresa <b id="roiPer">$4</b> en ventas.<br>Se paga solo en <b id="roiDays">~7 días</b> del mes.</div>
+    <div class="priceday">Qartilla cuesta <b id="pdDay">$167</b> al día — <span id="pdCompare">lo que cuesta un platillo</span>.</div>
+    <div class="invest">Primer mes (con instalación): inviertes <b id="invFirst">$10,000</b> &rarr; te deja <b id="invNet" style="color:var(--gold-bright)">$11,600</b> de ventas extra. Del segundo mes en adelante, solo la mensualidad.</div>
   </div>
 
   <div class="acc quiet" id="accPrecio">
@@ -224,13 +224,13 @@
     </div>
     <div class="acc-body">
       <div class="acc-inner" style="padding-top:4px;">
-        <div class="srow"><div class="slabel">Qartilla al mes</div><div class="sval" id="vPrecio">$1,500</div></div>
+        <div class="srow"><div class="slabel">Qartilla al mes</div><div class="sval" id="vPrecio">$5,000</div></div>
         <div class="shint">Ajústalo según el plan</div>
-        <input type="range" id="precio" min="1500" max="20000" step="100" value="1500">
+        <input type="range" id="precio" min="1500" max="30000" step="100" value="5000">
         <div style="height:16px;"></div>
-        <div class="srow"><div class="slabel">Instalación (pago único)</div><div class="sval" id="vSetup">$2,000</div></div>
+        <div class="srow"><div class="slabel">Instalación (pago único)</div><div class="sval" id="vSetup">$5,000</div></div>
         <div class="shint">Cargamos tu menú con fotos y lo dejamos listo</div>
-        <input type="range" id="setup" min="1500" max="20000" step="100" value="2000">
+        <input type="range" id="setup" min="1500" max="20000" step="100" value="5000">
       </div>
     </div>
   </div>
@@ -256,16 +256,52 @@
     Y esto es el <b>mínimo</b>. Con más gente por mesa, más rotación o un mejor ticket, el número <b>sube</b>. Deja el sistema corriendo un mes y míralo tú mismo en el panel.
   </div>
 
+  <div class="section-label" style="text-align:center;margin:24px 4px 8px;">Moneda</div>
+  <div class="toggle" style="margin:0 0 4px;">
+    <button id="curMXN" class="on">Pesos &middot; MXN</button>
+    <button id="curUSD">Dólares &middot; USD</button>
+  </div>
+
   <div class="madein">Qartilla<span class="d">.</span> &nbsp;&middot;&nbsp; Menú inteligente</div>
 </div>
 
 <script>
   var $ = function(id){ return document.getElementById(id); };
-  function peso(n){ return '$' + Math.round(n).toLocaleString('es-MX'); }
+
+  var currency = 'MXN';
+  function peso(n){ return '$' + Math.round(n).toLocaleString(currency==='USD'?'en-US':'es-MX'); }
 
   var ids = ['mesas','pers','rot','conv','ticket','precio','setup'];
-  var PES  = {mesas:30, pers:2, rot:2, conv:1, ticket:60, precio:1500, setup:2000};
-  var REAL = {mesas:30, pers:3, rot:3, conv:2, ticket:80, precio:1500, setup:2000};
+
+  // Rangos NATIVOS por moneda para los sliders de dinero (no es conversión por tasa)
+  var MONEY = {
+    ticket: { MXN:{min:20,   max:250,   step:5},   USD:{min:1,  max:20,   step:1}  },
+    precio: { MXN:{min:1500, max:30000, step:100},  USD:{min:100, max:5000, step:10} },
+    setup:  { MXN:{min:1500, max:20000, step:100},  USD:{min:100, max:2000, step:10} }
+  };
+  var moneyIds = ['ticket','precio','setup'];
+
+  // Presets: los campos de dinero llevan un valor por moneda
+  var PES  = {mesas:30, pers:2, rot:2, conv:1, ticket:{MXN:60,USD:4}, precio:{MXN:5000,USD:500}, setup:{MXN:5000,USD:500}};
+  var REAL = {mesas:30, pers:3, rot:3, conv:2, ticket:{MXN:80,USD:7}, precio:{MXN:5000,USD:500}, setup:{MXN:5000,USD:500}};
+  var scenario = 'PES';
+
+  function setMoney(id, val){
+    var el=$(id), cfg=MONEY[id][currency];
+    el.min=cfg.min; el.max=cfg.max; el.step=cfg.step; el.value=val;
+    fillTrack(el);
+  }
+  function applyCurrency(cur){
+    currency = cur;
+    var p = (scenario==='REAL') ? REAL : PES;
+    setMoney('ticket', p.ticket[cur]);
+    setMoney('precio', p.precio[cur]);
+    setMoney('setup',  p.setup[cur]);
+    $('curMXN').className = (cur==='MXN') ? 'on' : '';
+    $('curUSD').className = (cur==='USD') ? 'on' : '';
+    $('curTag').textContent = cur;
+    calc(false);
+  }
 
   var oppoMonths = 3;
   var lastHero = 21600;
@@ -291,6 +327,12 @@
   }
 
   function priceCompare(p){
+    if(currency==='USD'){
+      if(p<150) return 'menos que un platillo';
+      if(p<400) return 'lo que cuesta un platillo';
+      if(p<1500) return 'una fracción de lo que vendes en una noche';
+      return 'una fracción de lo que vendes en un fin de semana';
+    }
     if(p<3000) return 'menos que un platillo';
     if(p<7500) return 'lo que cuesta un platillo';
     if(p<15000) return 'una fracción de lo que vendes en una noche';
@@ -358,7 +400,11 @@
   }
 
   function setPreset(p, pessimist){
-    for(var k=0;k<ids.length;k++){ $(ids[k]).value = p[ids[k]]; }
+    scenario = pessimist ? 'PES' : 'REAL';
+    $('mesas').value=p.mesas; $('pers').value=p.pers; $('rot').value=p.rot; $('conv').value=p.conv;
+    setMoney('ticket', p.ticket[currency]);
+    setMoney('precio', p.precio[currency]);
+    setMoney('setup',  p.setup[currency]);
     $('chipText').textContent = pessimist ? 'Escenario pesimista · contando bajo' : 'Escenario realista · lo más probable';
     $('btnPes').className = pessimist ? 'on' : '';
     $('btnReal').className = pessimist ? '' : 'on';
@@ -377,6 +423,8 @@
 
   $('btnPes').addEventListener('click', function(){ setPreset(PES,true); });
   $('btnReal').addEventListener('click', function(){ setPreset(REAL,false); });
+  $('curMXN').addEventListener('click', function(){ if(currency!=='MXN'){ applyCurrency('MXN'); } });
+  $('curUSD').addEventListener('click', function(){ if(currency!=='USD'){ applyCurrency('USD'); } });
   $('accHead').addEventListener('click', function(){ $('acc').classList.toggle('open'); });
   $('accPrecioHead').addEventListener('click', function(){ $('accPrecio').classList.toggle('open'); });
 
