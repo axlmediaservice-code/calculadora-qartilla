@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Qartilla · Calculadora de ventas extra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1729; --navy-2:#0F1E36; --navy-card:#13243F;
+    --gold:#D8B468; --gold-bright:#EAC983; --cream:#F3EFE7; --muted:#9DA9BE;
+    --line:rgba(216,180,104,.18); --line-soft:rgba(255,255,255,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+  html,body{background:var(--navy);}
+  body{
+    font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    color:var(--cream);min-height:100vh;overflow-x:hidden;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(216,180,104,.10), transparent 60%),
+      radial-gradient(900px 500px at 90% 100%, rgba(216,180,104,.05), transparent 55%),
+      var(--navy);
+    padding:0 0 48px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:440px;margin:0 auto;padding:0 18px;}
+
+  header{padding:26px 0 8px;text-align:center;opacity:0;animation:rise .7s .05s forwards;}
+  .brand{font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:25px;letter-spacing:.5px;color:var(--cream);}
+  .brand .d{color:var(--gold);}
+  .kicker{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-top:6px;font-weight:600;}
+
+  .hero{
+    text-align:center;margin-top:18px;padding:30px 18px 26px;
+    background:linear-gradient(180deg, rgba(216,180,104,.07), rgba(216,180,104,.02));
+    border:1px solid var(--line);border-radius:22px;position:relative;overflow:hidden;
+    opacity:0;animation:rise .7s .15s forwards;
+  }
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(420px 200px at 50% 0%, rgba(234,201,131,.14), transparent 70%);pointer-events:none;}
+  .hero .lead{font-size:13px;color:var(--muted);letter-spacing:.3px;}
+  .bignum{
+    font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:clamp(36px,12.5vw,58px);line-height:1.04;
+    color:var(--gold-bright);margin:6px 0 2px;letter-spacing:-1px;font-variant-numeric:tabular-nums;
+    text-shadow:0 2px 30px rgba(216,180,104,.25);transition:transform .18s ease;white-space:nowrap;
+  }
+  .bignum.pulse{transform:scale(1.035);}
+  .hero .unit{font-size:14px;color:var(--cream);font-weight:600;}
+  .yearline{margin-top:12px;font-size:13.5px;color:var(--muted);}
+  .yearline b{color:var(--gold-bright);font-family:'Playfair Display',Georgia,serif;font-size:16px;}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;margin-top:14px;padding:7px 14px;border-radius:999px;
+    background:rgba(216,180,104,.12);border:1px solid var(--line);
+    font-size:11.5px;color:var(--gold-bright);font-weight:600;letter-spacing:.4px;
+  }
+  .chip .dotg{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);flex:0 0 auto;}
+
+  .section-label{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:26px 4px 12px;font-weight:600;}
+
+  .card{background:var(--navy-card);border:1px solid var(--line-soft);border-radius:18px;padding:18px 18px 20px;margin-bottom:12px;opacity:0;animation:rise .6s forwards;}
+  .srow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:2px;}
+  .slabel{font-size:14.5px;font-weight:600;color:var(--cream);line-height:1.3;}
+  .sval{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:24px;color:var(--gold-bright);font-variant-numeric:tabular-nums;white-space:nowrap;flex:0 0 auto;}
+  .shint{font-size:11.5px;color:var(--muted);margin-bottom:13px;}
+
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:40px;background:transparent;cursor:pointer;touch-action:none;}
+  input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:99px;background:linear-gradient(90deg,var(--gold) var(--fill,40%), rgba(255,255,255,.10) var(--fill,40%));}
+  input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:rgba(255,255,255,.10);}
+  input[type=range]::-moz-range-progress{height:6px;border-radius:99px;background:var(--gold);}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;margin-top:-11px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #fff, var(--gold-bright) 45%, var(--gold) 100%);border:2px solid var(--navy);box-shadow:0 3px 12px rgba(0,0,0,.45), 0 0 0 4px rgba(216,180,104,.15);}
+  input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;border:2px solid var(--navy);background:radial-gradient(circle at 35% 30%, #fff, var(--gold-bright) 45%, var(--gold) 100%);box-shadow:0 3px 12px rgba(0,0,0,.45), 0 0 0 4px rgba(216,180,104,.15);}
+
+  .acc{background:var(--navy-2);border:1px solid var(--line-soft);border-radius:16px;margin-bottom:12px;overflow:hidden;opacity:0;animation:rise .6s forwards;}
+  .acc-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;cursor:pointer;user-select:none;-webkit-user-select:none;}
+  .acc-head .t{font-size:14.5px;font-weight:700;color:var(--cream);display:flex;align-items:center;gap:9px;}
+  .acc-head .t .q{width:22px;height:22px;border-radius:50%;background:rgba(216,180,104,.15);border:1px solid var(--line);color:var(--gold-bright);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .acc-head .caret{color:var(--gold);font-size:13px;transition:transform .3s ease;flex:0 0 auto;}
+  .acc.open .acc-head .caret{transform:rotate(180deg);}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+  .acc.open .acc-body{max-height:1100px;}
+  .acc-inner{padding:0 18px 18px;font-size:13.5px;color:var(--muted);line-height:1.6;}
+
+  /* acordeón discreto (ajustar precios) — apenas visible cerrado */
+  .acc.quiet{background:transparent;border:none;margin-bottom:6px;overflow:visible;}
+  .acc.quiet .acc-head{justify-content:center;gap:7px;padding:9px 4px;opacity:.32;transition:opacity .25s ease;}
+  .acc.quiet .acc-head:active{opacity:.6;}
+  .acc.quiet .acc-head .t{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.6px;text-transform:lowercase;}
+  .acc.quiet .acc-head .t .q{display:none;}
+  .acc.quiet .acc-head .caret{font-size:9px;color:var(--muted);}
+  .acc.quiet.open{background:var(--navy-2);border:1px solid var(--line-soft);border-radius:16px;overflow:hidden;}
+  .acc.quiet.open .acc-head{opacity:.75;}
+
+  .formula{background:var(--navy-card);border:1px dashed var(--line);border-radius:12px;padding:13px 14px;margin:6px 0 14px;color:var(--cream);font-size:13px;line-height:1.8;}
+  .formula b{color:var(--gold-bright);font-variant-numeric:tabular-nums;}
+
+  .flow{background:linear-gradient(180deg,var(--navy-2),var(--navy-card));border:1px solid var(--line-soft);border-radius:18px;padding:18px 20px;margin-bottom:12px;opacity:0;animation:rise .6s forwards;}
+  .fstep{display:flex;align-items:center;gap:12px;padding:7px 0;font-size:14px;color:var(--cream);}
+  .fstep .fn{font-family:'Playfair Display',Georgia,serif;font-weight:700;color:var(--gold-bright);font-size:18px;min-width:60px;font-variant-numeric:tabular-nums;flex:0 0 auto;}
+  .fstep .ft{color:var(--muted);font-size:13px;line-height:1.3;}
+  .fdiv{height:1px;background:var(--line-soft);margin:2px 0;}
+  .fstep.total .ft{color:var(--cream);font-weight:600;}
+
+  .roi{background:linear-gradient(135deg, rgba(216,180,104,.14), rgba(216,180,104,.04));border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:12px;opacity:0;animation:rise .6s forwards;}
+  .roi .big{font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:30px;color:var(--gold-bright);line-height:1.1;font-variant-numeric:tabular-nums;}
+  .roi .sub{font-size:13.5px;color:var(--cream);margin-top:4px;line-height:1.5;}
+  .roi .sub b{color:var(--gold-bright);}
+  .roi .priceday{margin-top:13px;padding-top:13px;border-top:1px solid var(--line-soft);font-size:13px;color:var(--muted);line-height:1.5;}
+  .roi .priceday b{color:var(--gold-bright);}
+  .roi .invest{margin-top:13px;padding-top:13px;border-top:1px solid var(--line-soft);font-size:13px;color:var(--muted);line-height:1.55;}
+  .roi .invest b{color:var(--cream);}
+
+  .oppo{background:linear-gradient(135deg, rgba(255,120,120,.10), rgba(255,120,120,.03));border:1px solid rgba(255,150,150,.20);border-radius:18px;padding:18px 20px;margin-bottom:8px;opacity:0;animation:rise .6s forwards;}
+  .oppo .lbl{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#E8A6A6;font-weight:700;}
+  .oppo .big{font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:clamp(24px,8vw,28px);color:#F2C4C4;margin:4px 0 2px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .oppo .sub{font-size:13px;color:var(--muted);line-height:1.5;}
+  .oppo .seg{display:flex;gap:6px;margin-top:12px;}
+  .oppo .seg button{flex:1;border:1px solid rgba(255,150,150,.25);background:rgba(255,120,120,.06);color:#E8A6A6;font-family:inherit;font-weight:700;font-size:13px;padding:9px 4px;border-radius:9px;cursor:pointer;transition:all .2s;}
+  .oppo .seg button.on{background:rgba(255,120,120,.18);color:#F2C4C4;}
+
+  .toggle{display:flex;background:var(--navy-card);border:1px solid var(--line-soft);border-radius:14px;padding:5px;margin:22px 0 10px;gap:5px;opacity:0;animation:rise .6s forwards;}
+  .toggle button{flex:1;border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:10px;cursor:pointer;transition:all .2s ease;letter-spacing:.3px;}
+  .toggle button.on{background:var(--gold);color:var(--navy);box-shadow:0 4px 14px rgba(216,180,104,.3);}
+
+  .footnote{text-align:center;font-size:13px;color:var(--muted);line-height:1.55;margin-top:18px;padding:0 6px;opacity:0;animation:rise .6s .2s forwards;}
+  .footnote b{color:var(--gold-bright);}
+  .madein{text-align:center;margin-top:22px;font-size:11px;letter-spacing:2px;color:rgba(157,169,190,.6);text-transform:uppercase;}
+  .madein .d{color:var(--gold);}
+
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">Qartilla<span class="d">.</span></div>
+    <div class="kicker">Cuánto dinero deja sobre la mesa</div>
+  </header>
+
+  <div class="hero">
+    <div class="lead">Tu restaurante podría estar ganando</div>
+    <div class="bignum" id="heroNum">$21,600</div>
+    <div class="unit">en ventas extra al mes</div>
+    <div class="yearline">Eso son <b id="yearNum">$259,200</b> al año</div>
+    <div class="chip"><span class="dotg"></span><span id="chipText">Escenario pesimista · contando bajo</span></div>
+  </div>
+
+  <div class="acc" id="acc">
+    <div class="acc-head" id="accHead">
+      <div class="t"><span class="q">?</span>¿De dónde sale este número?</div>
+      <div class="caret">&#9660;</div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-inner">
+        <p style="margin-bottom:10px;">El cálculo es simple y lo puedes seguir paso a paso. El menú de Qartilla, con su <b style="color:var(--gold-bright)">mesero inteligente</b>, le sugiere a cada cliente un extra (un postre, una bebida, una guarnición). Una parte acepta. Eso es venta que hoy no estás haciendo.</p>
+        <div class="formula">
+          mesas <b id="eMesas">30</b> &times; personas que ordenan <b id="ePers">2</b> &times; veces al día que se ocupa la mesa <b id="eRot">2</b><br>
+          = <b id="eCom">120</b> personas ven tu menú al día<br><br>
+          de cada 10, aceptan <b id="eConv">1</b> &rarr; <b id="eUps">12</b> sugerencias al día<br>
+          &times; <b id="eTicket">$60</b> cada una = <b id="eDay">$720</b> al día<br>
+          &times; 30 días = <b id="eMonth">$21,600</b> al mes
+        </div>
+        <p style="font-size:12.5px;">Todos los supuestos están <b style="color:var(--gold-bright)">contados bajo</b> a propósito: 2 personas por mesa (no todas sacan el celular), 2 rotaciones (suele llenarse más veces) y solo 1 de cada 10 acepta. En la práctica suele ser bastante más — por eso lo llamamos el <b style="color:var(--gold-bright)">piso</b>. Y lo mejor: con Qartilla lo ves real en tu panel de estadísticas.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Ajusta con los datos del restaurante</div>
+
+  <div class="card">
+    <div class="srow"><div class="slabel">Mesas en el restaurante</div><div class="sval" id="vMesas">30</div></div>
+    <div class="shint">Cuántas mesas tiene en total</div>
+    <input type="range" id="mesas" min="2" max="80" value="30">
+  </div>
+
+  <div class="card">
+    <div class="srow"><div class="slabel">Personas que ordenan por mesa</div><div class="sval" id="vPers">2</div></div>
+    <div class="shint">Contamos bajo: no todos sacan el celular</div>
+    <input type="range" id="pers" min="1" max="8" value="2">
+  </div>
+
+  <div class="card">
+    <div class="srow"><div class="slabel">Veces que se ocupa cada mesa al día</div><div class="sval" id="vRot">2</div></div>
+    <div class="shint">Rotación. El Marismeño abre 17 h, suele ser más</div>
+    <input type="range" id="rot" min="1" max="6" value="2">
+  </div>
+
+  <div class="card">
+    <div class="srow"><div class="slabel">De cada 10 personas, cuántas aceptan una sugerencia</div><div class="sval" id="vConv">1</div></div>
+    <div class="shint">El mesero inteligente sugiere; aquí contamos solo 1 de 10</div>
+    <input type="range" id="conv" min="0" max="10" value="1">
+  </div>
+
+  <div class="card">
+    <div class="srow"><div class="slabel">Cuánto suma esa sugerencia</div><div class="sval" id="vTicket">$60</div></div>
+    <div class="shint">Un postre, una bebida, un extra</div>
+    <input type="range" id="ticket" min="20" max="250" step="5" value="60">
+  </div>
+
+  <div class="section-label">La cuenta, paso a paso</div>
+  <div class="flow">
+    <div class="fstep"><span class="fn" id="fPers">120</span><span class="ft">personas ven tu menú al día</span></div>
+    <div class="fdiv"></div>
+    <div class="fstep"><span class="fn" id="fUps">12</span><span class="ft">aceptan una sugerencia del mesero inteligente</span></div>
+    <div class="fdiv"></div>
+    <div class="fstep total"><span class="fn" id="fDay">$720</span><span class="ft">más en ventas, cada día</span></div>
+  </div>
+
+  <div class="section-label">Lo que cuesta vs. lo que deja</div>
+
+  <div class="roi">
+    <div class="big" id="roiX">14&times;</div>
+    <div class="sub">Por cada <b>$1</b> que invierte, le regresa <b id="roiPer">$14</b> en ventas.<br>Se paga solo en <b id="roiDays">~2 días</b> del mes.</div>
+    <div class="priceday">Qartilla cuesta <b id="pdDay">$50</b> al día — <span id="pdCompare">menos que un platillo</span>.</div>
+    <div class="invest">Primer mes (con instalación): inviertes <b id="invFirst">$3,500</b> &rarr; te deja <b id="invNet" style="color:var(--gold-bright)">$18,100</b> de ventas extra. Del segundo mes en adelante, solo la mensualidad.</div>
+  </div>
+
+  <div class="acc quiet" id="accPrecio">
+    <div class="acc-head" id="accPrecioHead">
+      <div class="t"><span class="q">$</span>ajustar precios del plan</div>
+      <div class="caret">&#9660;</div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-inner" style="padding-top:4px;">
+        <div class="srow"><div class="slabel">Qartilla al mes</div><div class="sval" id="vPrecio">$1,500</div></div>
+        <div class="shint">Ajústalo según el plan</div>
+        <input type="range" id="precio" min="1500" max="20000" step="100" value="1500">
+        <div style="height:16px;"></div>
+        <div class="srow"><div class="slabel">Instalación (pago único)</div><div class="sval" id="vSetup">$2,000</div></div>
+        <div class="shint">Cargamos tu menú con fotos y lo dejamos listo</div>
+        <input type="range" id="setup" min="1500" max="20000" step="100" value="2000">
+      </div>
+    </div>
+  </div>
+
+  <div class="oppo">
+    <div class="lbl">Lo que ya dejaste de ganar sin esto</div>
+    <div class="big" id="oppoNum">$64,800</div>
+    <div class="sub" id="oppoSub">en los últimos 3 meses sin un mesero que sugiera</div>
+    <div class="seg">
+      <button data-m="1">1 mes</button>
+      <button data-m="3" class="on">3 meses</button>
+      <button data-m="6">6 meses</button>
+      <button data-m="12">1 año</button>
+    </div>
+  </div>
+
+  <div class="toggle">
+    <button id="btnPes" class="on">Pesimista</button>
+    <button id="btnReal">Realista</button>
+  </div>
+
+  <div class="footnote">
+    Y esto es el <b>mínimo</b>. Con más gente por mesa, más rotación o un mejor ticket, el número <b>sube</b>. Deja el sistema corriendo un mes y míralo tú mismo en el panel.
+  </div>
+
+  <div class="madein">Qartilla<span class="d">.</span> &nbsp;&middot;&nbsp; Menú inteligente</div>
+</div>
+
+<script>
+  var $ = function(id){ return document.getElementById(id); };
+  function peso(n){ return '$' + Math.round(n).toLocaleString('es-MX'); }
+
+  var ids = ['mesas','pers','rot','conv','ticket','precio','setup'];
+  var PES  = {mesas:30, pers:2, rot:2, conv:1, ticket:60, precio:1500, setup:2000};
+  var REAL = {mesas:30, pers:3, rot:3, conv:2, ticket:80, precio:1500, setup:2000};
+
+  var oppoMonths = 3;
+  var lastHero = 21600;
+  var tweenRAF = null;
+
+  function tween(el, from, to){
+    if(tweenRAF){ cancelAnimationFrame(tweenRAF); }
+    var t0 = (window.performance && performance.now) ? performance.now() : Date.now();
+    var dur = 320;
+    function now(){ return (window.performance && performance.now) ? performance.now() : Date.now(); }
+    function step(){
+      var p = Math.min(1,(now()-t0)/dur);
+      var e = 1-Math.pow(1-p,3);
+      el.textContent = peso(from+(to-from)*e);
+      if(p<1){ tweenRAF = requestAnimationFrame(step); } else { tweenRAF = null; }
+    }
+    tweenRAF = requestAnimationFrame(step);
+  }
+
+  function fillTrack(el){
+    var min=+el.min, max=+el.max, v=+el.value;
+    el.style.setProperty('--fill', ((v-min)/(max-min)*100)+'%');
+  }
+
+  function priceCompare(p){
+    if(p<3000) return 'menos que un platillo';
+    if(p<7500) return 'lo que cuesta un platillo';
+    if(p<15000) return 'una fracción de lo que vendes en una noche';
+    return 'una fracción de lo que vendes en un fin de semana';
+  }
+
+  function calc(animate){
+    var mesas=+$('mesas').value, pers=+$('pers').value, rot=+$('rot').value,
+        conv=+$('conv').value, ticket=+$('ticket').value, precio=+$('precio').value, setup=+$('setup').value;
+
+    $('vMesas').textContent=mesas; $('vPers').textContent=pers; $('vRot').textContent=rot;
+    $('vConv').textContent=conv; $('vTicket').textContent=peso(ticket);
+    $('vPrecio').textContent=peso(precio); $('vSetup').textContent=peso(setup);
+    for(var k=0;k<ids.length;k++){ fillTrack($(ids[k])); }
+
+    var com = mesas*pers*rot;
+    var ups = com*(conv/10);
+    var day = ups*ticket;
+    var month = day*30;
+    var year = month*12;
+
+    $('fPers').textContent=Math.round(com);
+    $('fUps').textContent=Math.round(ups);
+    $('fDay').textContent=peso(day);
+
+    if(animate){
+      tween($('heroNum'), lastHero, month);
+      var h=$('heroNum'); h.className='bignum pulse'; setTimeout(function(){ h.className='bignum'; },180);
+    } else {
+      if(tweenRAF){ cancelAnimationFrame(tweenRAF); tweenRAF=null; }
+      $('heroNum').textContent=peso(month);
+    }
+    lastHero=month;
+    $('yearNum').textContent=peso(year);
+
+    $('eMesas').textContent=mesas; $('ePers').textContent=pers; $('eRot').textContent=rot;
+    $('eCom').textContent=Math.round(com); $('eConv').textContent=conv;
+    $('eUps').textContent=Math.round(ups); $('eTicket').textContent=peso(ticket);
+    $('eDay').textContent=peso(day); $('eMonth').textContent=peso(month);
+
+    $('pdDay').textContent=peso(precio/30);
+    $('pdCompare').textContent=priceCompare(precio);
+
+    var x = precio>0 ? month/precio : 0;
+    $('roiX').textContent=(x>=10?Math.round(x):x.toFixed(1))+'\u00d7';
+    $('roiPer').textContent=peso(x);
+    var d2p = day>0 ? precio/day : 0;
+    $('roiDays').textContent = d2p<1 ? 'menos de 1 día' : '~'+Math.max(1,Math.round(d2p))+(Math.round(d2p)===1?' día':' días');
+
+    var first = precio+setup;
+    $('invFirst').textContent=peso(first);
+    $('invNet').textContent=peso(month-first);
+
+    $('oppoNum').textContent=peso(month*oppoMonths);
+    var txt = oppoMonths===1?'en el último mes':(oppoMonths===12?'en el último año':'en los últimos '+oppoMonths+' meses');
+    $('oppoSub').textContent=txt+' sin un mesero que sugiera';
+  }
+
+  // Programador por frame: una sola actualización por cuadro (suave y eficiente en móvil)
+  var pending=false;
+  function scheduleCalc(){
+    if(pending) return;
+    pending=true;
+    requestAnimationFrame(function(){ pending=false; calc(false); });
+  }
+
+  function setPreset(p, pessimist){
+    for(var k=0;k<ids.length;k++){ $(ids[k]).value = p[ids[k]]; }
+    $('chipText').textContent = pessimist ? 'Escenario pesimista · contando bajo' : 'Escenario realista · lo más probable';
+    $('btnPes').className = pessimist ? 'on' : '';
+    $('btnReal').className = pessimist ? '' : 'on';
+    calc(true);
+  }
+
+  // Enlace cuádruple para que CUALQUIER navegador móvil actualice al arrastrar:
+  // input (estándar) + change (al soltar) + pointermove + touchmove (arrastre con dedo).
+  for(var k=0;k<ids.length;k++){
+    var el=$(ids[k]);
+    el.addEventListener('input', scheduleCalc);
+    el.addEventListener('change', scheduleCalc);
+    el.addEventListener('pointermove', function(ev){ if(ev.buttons||ev.pressure){ scheduleCalc(); } });
+    el.addEventListener('touchmove', scheduleCalc, {passive:true});
+  }
+
+  $('btnPes').addEventListener('click', function(){ setPreset(PES,true); });
+  $('btnReal').addEventListener('click', function(){ setPreset(REAL,false); });
+  $('accHead').addEventListener('click', function(){ $('acc').classList.toggle('open'); });
+  $('accPrecioHead').addEventListener('click', function(){ $('accPrecio').classList.toggle('open'); });
+
+  var segBtns = document.querySelectorAll('.oppo .seg button');
+  for(var s=0;s<segBtns.length;s++){
+    segBtns[s].addEventListener('click', function(){
+      for(var j=0;j<segBtns.length;j++){ segBtns[j].className=''; }
+      this.className='on';
+      oppoMonths=+this.getAttribute('data-m');
+      calc(true);
+    });
+  }
+
+  for(var k2=0;k2<ids.length;k2++){ fillTrack($(ids[k2])); }
+  calc(false);
+</script>
+</body>
+</html>
