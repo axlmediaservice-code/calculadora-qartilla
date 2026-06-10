@@ -121,6 +121,7 @@
   .toggle{display:flex;background:var(--navy-card);border:1px solid var(--line-soft);border-radius:14px;padding:5px;margin:22px 0 10px;gap:5px;opacity:0;animation:rise .6s forwards;}
   .toggle button{flex:1;border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;font-size:14px;padding:12px;border-radius:10px;cursor:pointer;transition:all .2s ease;letter-spacing:.3px;}
   .toggle button.on{background:var(--gold);color:var(--navy);box-shadow:0 4px 14px rgba(216,180,104,.3);}
+  .toggle.compact button{font-size:13px;padding:10px 4px;}
 
   .footnote{text-align:center;font-size:13px;color:var(--muted);line-height:1.55;margin-top:18px;padding:0 6px;opacity:0;animation:rise .6s .2s forwards;}
   .footnote b{color:var(--gold-bright);}
@@ -136,154 +137,276 @@
 
   <header>
     <div class="brand">Qartilla<span class="d">.</span></div>
-    <div class="kicker">Cuánto dinero deja sobre la mesa</div>
+    <div class="kicker" data-i18n="kicker">Cuánto dinero deja sobre la mesa</div>
   </header>
 
   <div class="hero">
-    <div class="lead">Tu restaurante podría estar ganando</div>
+    <div class="lead" data-i18n="lead">Tu restaurante podría estar ganando</div>
     <div class="bignum" id="heroNum">$21,600</div>
-    <div class="unit">en ventas extra al mes &middot; <span id="curTag" style="color:var(--gold);font-weight:700;">MXN</span></div>
-    <div class="yearline">Eso son <b id="yearNum">$259,200</b> al año</div>
+    <div class="unit"><span data-i18n="unit_month">en ventas extra al mes</span> &middot; <span id="curTag" style="color:var(--gold);font-weight:700;">MXN</span></div>
+    <div class="yearline"><span data-i18n="year_pre">Eso son</span> <b id="yearNum">$259,200</b> <span data-i18n="year_post">al año</span></div>
     <div class="chip"><span class="dotg"></span><span id="chipText">Escenario pesimista · contando bajo</span></div>
   </div>
 
   <div class="acc" id="acc">
     <div class="acc-head" id="accHead">
-      <div class="t"><span class="q">?</span>¿De dónde sale este número?</div>
+      <div class="t"><span class="q">?</span><span data-i18n="acc_q">¿De dónde sale este número?</span></div>
       <div class="caret">&#9660;</div>
     </div>
     <div class="acc-body">
       <div class="acc-inner">
-        <p style="margin-bottom:10px;">El cálculo es simple y lo puedes seguir paso a paso. El menú de Qartilla, con su <b style="color:var(--gold-bright)">mesero inteligente</b>, le sugiere a cada cliente un extra (un postre, una bebida, una guarnición). Una parte acepta. Eso es venta que hoy no estás haciendo.</p>
+        <p style="margin-bottom:10px;" data-i18n-html="acc_p1">El cálculo es simple y lo puedes seguir paso a paso. El menú de Qartilla, con su <b style="color:var(--gold-bright)">mesero inteligente</b>, le sugiere a cada cliente un extra (un postre, una bebida, una guarnición). Una parte acepta. Eso es venta que hoy no estás haciendo.</p>
         <div class="formula">
-          mesas <b id="eMesas">30</b> &times; personas que ordenan <b id="ePers">2</b> &times; veces al día que se ocupa la mesa <b id="eRot">2</b><br>
-          = <b id="eCom">120</b> personas ven tu menú al día<br><br>
-          de cada 10, aceptan <b id="eConv">1</b> &rarr; <b id="eUps">12</b> sugerencias al día<br>
-          &times; <b id="eTicket">$60</b> cada una = <b id="eDay">$720</b> al día<br>
-          &times; 30 días = <b id="eMonth">$21,600</b> al mes
+          <span data-i18n="f_mesas">mesas</span> <b id="eMesas">30</b> &times; <span data-i18n="f_pers">personas que ordenan</span> <b id="ePers">2</b> &times; <span data-i18n="f_rot">veces al día que se ocupa la mesa</span> <b id="eRot">2</b><br>
+          = <b id="eCom">120</b> <span data-i18n="f_com">personas ven tu menú al día</span><br><br>
+          <span data-i18n="f_accept">de cada 10, aceptan</span> <b id="eConv">1</b> &rarr; <b id="eUps">12</b> <span data-i18n="f_sug">sugerencias al día</span><br>
+          &times; <b id="eTicket">$60</b> <span data-i18n="f_each">cada una</span> = <b id="eDay">$720</b> <span data-i18n="f_day">al día</span><br>
+          <span data-i18n="f_30">&times; 30 días</span> = <b id="eMonth">$21,600</b> <span data-i18n="f_month">al mes</span>
         </div>
-        <p style="font-size:12.5px;">Todos los supuestos están <b style="color:var(--gold-bright)">contados bajo</b> a propósito: 2 personas por mesa (no todas sacan el celular), 2 rotaciones (suele llenarse más veces) y solo 1 de cada 10 acepta. En la práctica suele ser bastante más — por eso lo llamamos el <b style="color:var(--gold-bright)">piso</b>. Y lo mejor: con Qartilla lo ves real en tu panel de estadísticas.</p>
+        <p style="font-size:12.5px;" data-i18n-html="acc_p2">Todos los supuestos están <b style="color:var(--gold-bright)">contados bajo</b> a propósito: 2 personas por mesa (no todas sacan el celular), 2 rotaciones (suele llenarse más veces) y solo 1 de cada 10 acepta. En la práctica suele ser bastante más — por eso lo llamamos el <b style="color:var(--gold-bright)">piso</b>. Y lo mejor: con Qartilla lo ves real en tu panel de estadísticas.</p>
       </div>
     </div>
   </div>
 
-  <div class="section-label">Ajusta con los datos del restaurante</div>
+  <div class="section-label" data-i18n="sec_adjust">Ajusta con los datos del restaurante</div>
 
   <div class="card">
-    <div class="srow"><div class="slabel">Mesas en el restaurante</div><div class="sval" id="vMesas">30</div></div>
-    <div class="shint">Cuántas mesas tiene en total</div>
+    <div class="srow"><div class="slabel" data-i18n="lbl_mesas">Mesas en el restaurante</div><div class="sval" id="vMesas">30</div></div>
+    <div class="shint" data-i18n="hint_mesas">Cuántas mesas tiene en total</div>
     <input type="range" id="mesas" min="2" max="80" value="30">
   </div>
 
   <div class="card">
-    <div class="srow"><div class="slabel">Personas que ordenan por mesa</div><div class="sval" id="vPers">2</div></div>
-    <div class="shint">Contamos bajo: no todos sacan el celular</div>
+    <div class="srow"><div class="slabel" data-i18n="lbl_pers">Personas que ordenan por mesa</div><div class="sval" id="vPers">2</div></div>
+    <div class="shint" data-i18n="hint_pers">Contamos bajo: no todos sacan el celular</div>
     <input type="range" id="pers" min="1" max="8" value="2">
   </div>
 
   <div class="card">
-    <div class="srow"><div class="slabel">Veces que se ocupa cada mesa al día</div><div class="sval" id="vRot">2</div></div>
-    <div class="shint">Rotación. El Marismeño abre 17 h, suele ser más</div>
+    <div class="srow"><div class="slabel" data-i18n="lbl_rot">Veces que se ocupa cada mesa al día</div><div class="sval" id="vRot">2</div></div>
+    <div class="shint" data-i18n="hint_rot">Rotación. El Marismeño abre 17 h, suele ser más</div>
     <input type="range" id="rot" min="1" max="6" value="2">
   </div>
 
   <div class="card">
-    <div class="srow"><div class="slabel">De cada 10 personas, cuántas aceptan una sugerencia</div><div class="sval" id="vConv">1</div></div>
-    <div class="shint">El mesero inteligente sugiere; aquí contamos solo 1 de 10</div>
+    <div class="srow"><div class="slabel" data-i18n="lbl_conv">De cada 10 personas, cuántas aceptan una sugerencia</div><div class="sval" id="vConv">1</div></div>
+    <div class="shint" data-i18n="hint_conv">El mesero inteligente sugiere; aquí contamos solo 1 de 10</div>
     <input type="range" id="conv" min="0" max="10" value="1">
   </div>
 
   <div class="card">
-    <div class="srow"><div class="slabel">Cuánto suma esa sugerencia</div><div class="sval" id="vTicket">$60</div></div>
-    <div class="shint">Un postre, una bebida, un extra</div>
+    <div class="srow"><div class="slabel" data-i18n="lbl_ticket">Cuánto suma esa sugerencia</div><div class="sval" id="vTicket">$60</div></div>
+    <div class="shint" data-i18n="hint_ticket">Un postre, una bebida, un extra</div>
     <input type="range" id="ticket" min="20" max="250" step="5" value="60">
   </div>
 
-  <div class="section-label">La cuenta, paso a paso</div>
+  <div class="section-label" data-i18n="sec_flow">La cuenta, paso a paso</div>
   <div class="flow">
-    <div class="fstep"><span class="fn" id="fPers">120</span><span class="ft">personas ven tu menú al día</span></div>
+    <div class="fstep"><span class="fn" id="fPers">120</span><span class="ft" data-i18n="flow_pers">personas ven tu menú al día</span></div>
     <div class="fdiv"></div>
-    <div class="fstep"><span class="fn" id="fUps">12</span><span class="ft">aceptan una sugerencia del mesero inteligente</span></div>
+    <div class="fstep"><span class="fn" id="fUps">12</span><span class="ft" data-i18n="flow_ups">aceptan una sugerencia del mesero inteligente</span></div>
     <div class="fdiv"></div>
-    <div class="fstep total"><span class="fn" id="fDay">$720</span><span class="ft">más en ventas, cada día</span></div>
+    <div class="fstep total"><span class="fn" id="fDay">$720</span><span class="ft" data-i18n="flow_day">más en ventas, cada día</span></div>
   </div>
 
-  <div class="section-label">Lo que cuesta vs. lo que deja</div>
+  <div class="section-label" data-i18n="sec_roi">Lo que cuesta vs. lo que deja</div>
 
   <div class="roi">
     <div class="big" id="roiX">4.3&times;</div>
-    <div class="sub">Por cada <b>$1</b> que invierte, le regresa <b id="roiPer">$4</b> en ventas.<br>Se paga solo en <b id="roiDays">~7 días</b> del mes.</div>
-    <div class="priceday">Qartilla cuesta <b id="pdDay">$167</b> al día — <span id="pdCompare">lo que cuesta un platillo</span>.</div>
-    <div class="invest">Primer mes (con instalación): inviertes <b id="invFirst">$10,000</b> &rarr; te deja <b id="invNet" style="color:var(--gold-bright)">$11,600</b> de ventas extra. Del segundo mes en adelante, solo la mensualidad.</div>
+    <div class="sub"><span data-i18n="roi_for">Por cada</span> <b id="roiOne">$1</b> <span data-i18n="roi_invest">que invierte, le regresa</span> <b id="roiPer">$4</b> <span data-i18n="roi_sales">en ventas.</span><br><span data-i18n="roi_pays">Se paga solo en</span> <b id="roiDays">~7 días</b> <span data-i18n="roi_ofmonth">del mes.</span></div>
+    <div class="priceday"><span data-i18n="pd_pre">Qartilla cuesta</span> <b id="pdDay">$167</b> <span data-i18n="pd_mid">al día</span> — <span id="pdCompare">lo que cuesta un platillo</span>.</div>
+    <div class="invest"><span data-i18n="inv_pre">Primer mes (con instalación): inviertes</span> <b id="invFirst">$10,000</b> &rarr; <span data-i18n="inv_mid">te deja</span> <b id="invNet" style="color:var(--gold-bright)">$11,600</b> <span data-i18n="inv_post">de ventas extra. Del segundo mes en adelante, solo la mensualidad.</span></div>
   </div>
 
   <div class="acc quiet" id="accPrecio">
     <div class="acc-head" id="accPrecioHead">
-      <div class="t"><span class="q">$</span>ajustar precios del plan</div>
+      <div class="t"><span class="q">$</span><span data-i18n="acc_price">ajustar precios del plan</span></div>
       <div class="caret">&#9660;</div>
     </div>
     <div class="acc-body">
       <div class="acc-inner" style="padding-top:4px;">
-        <div class="srow"><div class="slabel">Qartilla al mes</div><div class="sval" id="vPrecio">$5,000</div></div>
-        <div class="shint">Ajústalo según el plan</div>
+        <div class="srow"><div class="slabel" data-i18n="lbl_precio">Qartilla al mes</div><div class="sval" id="vPrecio">$5,000</div></div>
+        <div class="shint" data-i18n="hint_precio">Ajústalo según el plan</div>
         <input type="range" id="precio" min="1500" max="30000" step="100" value="5000">
         <div style="height:16px;"></div>
-        <div class="srow"><div class="slabel">Instalación (pago único)</div><div class="sval" id="vSetup">$5,000</div></div>
-        <div class="shint">Cargamos tu menú con fotos y lo dejamos listo</div>
+        <div class="srow"><div class="slabel" data-i18n="lbl_setup">Instalación (pago único)</div><div class="sval" id="vSetup">$5,000</div></div>
+        <div class="shint" data-i18n="hint_setup">Cargamos tu menú con fotos y lo dejamos listo</div>
         <input type="range" id="setup" min="1500" max="20000" step="100" value="5000">
       </div>
     </div>
   </div>
 
   <div class="oppo">
-    <div class="lbl">Lo que ya dejaste de ganar sin esto</div>
+    <div class="lbl" data-i18n="oppo_lbl">Lo que ya dejaste de ganar sin esto</div>
     <div class="big" id="oppoNum">$64,800</div>
     <div class="sub" id="oppoSub">en los últimos 3 meses sin un mesero que sugiera</div>
     <div class="seg">
-      <button data-m="1">1 mes</button>
-      <button data-m="3" class="on">3 meses</button>
-      <button data-m="6">6 meses</button>
-      <button data-m="12">1 año</button>
+      <button data-m="1" data-i18n="seg_1">1 mes</button>
+      <button data-m="3" class="on" data-i18n="seg_3">3 meses</button>
+      <button data-m="6" data-i18n="seg_6">6 meses</button>
+      <button data-m="12" data-i18n="seg_12">1 año</button>
     </div>
   </div>
 
   <div class="toggle">
-    <button id="btnPes" class="on">Pesimista</button>
-    <button id="btnReal">Realista</button>
+    <button id="btnPes" class="on" data-i18n="btn_pes">Pesimista</button>
+    <button id="btnReal" data-i18n="btn_real">Realista</button>
   </div>
 
-  <div class="footnote">
+  <div class="footnote" data-i18n-html="footnote">
     Y esto es el <b>mínimo</b>. Con más gente por mesa, más rotación o un mejor ticket, el número <b>sube</b>. Deja el sistema corriendo un mes y míralo tú mismo en el panel.
   </div>
 
-  <div class="section-label" style="text-align:center;margin:24px 4px 8px;">Moneda</div>
-  <div class="toggle" style="margin:0 0 4px;">
-    <button id="curMXN" class="on">Pesos &middot; MXN</button>
-    <button id="curUSD">Dólares &middot; USD</button>
+  <div class="section-label" style="text-align:center;margin:24px 4px 8px;" data-i18n="sec_currency">Moneda</div>
+  <div class="toggle compact" style="margin:0 0 4px;">
+    <button id="curMXN" class="on" data-i18n="cur_mxn">Pesos &middot; MXN</button>
+    <button id="curUSD" data-i18n="cur_usd">Dólares &middot; USD</button>
+    <button id="curEUR" data-i18n="cur_eur">Euros &middot; EUR</button>
   </div>
 
-  <div class="madein">Qartilla<span class="d">.</span> &nbsp;&middot;&nbsp; Menú inteligente</div>
+  <div class="section-label" style="text-align:center;margin:18px 4px 8px;" data-i18n="sec_lang">Idioma</div>
+  <div class="toggle compact" style="margin:0 0 4px;">
+    <button id="langES" class="on">Español</button>
+    <button id="langEN">English</button>
+  </div>
+
+  <div class="madein">Qartilla<span class="d">.</span> &nbsp;&middot;&nbsp; <span data-i18n="madein">Menú inteligente</span></div>
 </div>
 
 <script>
   var $ = function(id){ return document.getElementById(id); };
 
+  // ── i18n ─────────────────────────────────────────────────────────────────
+  // Un solo diccionario {es, en}; el HTML se rotula con data-i18n (textContent)
+  // o data-i18n-html (con <b> embebidas). Cambiar idioma solo re-rotula y
+  // re-formatea: NUNCA toca los valores de los sliders.
+  var I18N = {
+    es: {
+      title: 'Qartilla · Calculadora de ventas extra',
+      kicker: 'Cuánto dinero deja sobre la mesa',
+      lead: 'Tu restaurante podría estar ganando',
+      unit_month: 'en ventas extra al mes',
+      year_pre: 'Eso son', year_post: 'al año',
+      chip_pes: 'Escenario pesimista · contando bajo',
+      chip_real: 'Escenario realista · lo más probable',
+      acc_q: '¿De dónde sale este número?',
+      acc_p1: 'El cálculo es simple y lo puedes seguir paso a paso. El menú de Qartilla, con su <b style="color:var(--gold-bright)">mesero inteligente</b>, le sugiere a cada cliente un extra (un postre, una bebida, una guarnición). Una parte acepta. Eso es venta que hoy no estás haciendo.',
+      f_mesas: 'mesas', f_pers: 'personas que ordenan', f_rot: 'veces al día que se ocupa la mesa',
+      f_com: 'personas ven tu menú al día', f_accept: 'de cada 10, aceptan', f_sug: 'sugerencias al día',
+      f_each: 'cada una', f_day: 'al día', f_30: '× 30 días', f_month: 'al mes',
+      acc_p2: 'Todos los supuestos están <b style="color:var(--gold-bright)">contados bajo</b> a propósito: 2 personas por mesa (no todas sacan el celular), 2 rotaciones (suele llenarse más veces) y solo 1 de cada 10 acepta. En la práctica suele ser bastante más — por eso lo llamamos el <b style="color:var(--gold-bright)">piso</b>. Y lo mejor: con Qartilla lo ves real en tu panel de estadísticas.',
+      sec_adjust: 'Ajusta con los datos del restaurante',
+      lbl_mesas: 'Mesas en el restaurante', hint_mesas: 'Cuántas mesas tiene en total',
+      lbl_pers: 'Personas que ordenan por mesa', hint_pers: 'Contamos bajo: no todos sacan el celular',
+      lbl_rot: 'Veces que se ocupa cada mesa al día', hint_rot: 'Rotación. El Marismeño abre 17 h, suele ser más',
+      lbl_conv: 'De cada 10 personas, cuántas aceptan una sugerencia', hint_conv: 'El mesero inteligente sugiere; aquí contamos solo 1 de 10',
+      lbl_ticket: 'Cuánto suma esa sugerencia', hint_ticket: 'Un postre, una bebida, un extra',
+      sec_flow: 'La cuenta, paso a paso',
+      flow_pers: 'personas ven tu menú al día',
+      flow_ups: 'aceptan una sugerencia del mesero inteligente',
+      flow_day: 'más en ventas, cada día',
+      sec_roi: 'Lo que cuesta vs. lo que deja',
+      roi_for: 'Por cada', roi_invest: 'que invierte, le regresa', roi_sales: 'en ventas.',
+      roi_pays: 'Se paga solo en', roi_ofmonth: 'del mes.',
+      pd_pre: 'Qartilla cuesta', pd_mid: 'al día',
+      cmp_less: 'menos que un platillo', cmp_dish: 'lo que cuesta un platillo',
+      cmp_night: 'una fracción de lo que vendes en una noche', cmp_weekend: 'una fracción de lo que vendes en un fin de semana',
+      inv_pre: 'Primer mes (con instalación): inviertes', inv_mid: 'te deja',
+      inv_post: 'de ventas extra. Del segundo mes en adelante, solo la mensualidad.',
+      acc_price: 'ajustar precios del plan',
+      lbl_precio: 'Qartilla al mes', hint_precio: 'Ajústalo según el plan',
+      lbl_setup: 'Instalación (pago único)', hint_setup: 'Cargamos tu menú con fotos y lo dejamos listo',
+      oppo_lbl: 'Lo que ya dejaste de ganar sin esto',
+      oppo_m1: 'en el último mes', oppo_m12: 'en el último año', oppo_mn: 'en los últimos {n} meses',
+      oppo_suffix: 'sin un mesero que sugiera',
+      seg_1: '1 mes', seg_3: '3 meses', seg_6: '6 meses', seg_12: '1 año',
+      btn_pes: 'Pesimista', btn_real: 'Realista',
+      footnote: 'Y esto es el <b>mínimo</b>. Con más gente por mesa, más rotación o un mejor ticket, el número <b>sube</b>. Deja el sistema corriendo un mes y míralo tú mismo en el panel.',
+      sec_currency: 'Moneda', cur_mxn: 'Pesos · MXN', cur_usd: 'Dólares · USD', cur_eur: 'Euros · EUR',
+      sec_lang: 'Idioma',
+      madein: 'Menú inteligente',
+      days_less: 'menos de 1 día', day_one: 'día', day_many: 'días'
+    },
+    en: {
+      title: 'Qartilla · Extra-sales calculator',
+      kicker: 'How much money is left on the table',
+      lead: 'Your restaurant could be earning',
+      unit_month: 'in extra sales per month',
+      year_pre: 'That’s', year_post: 'a year',
+      chip_pes: 'Pessimistic scenario · counting low',
+      chip_real: 'Realistic scenario · the most likely',
+      acc_q: 'Where does this number come from?',
+      acc_p1: 'The math is simple and you can follow it step by step. The Qartilla menu, with its <b style="color:var(--gold-bright)">smart waiter</b>, suggests a little extra to every guest (a dessert, a drink, a side). Some accept. That’s revenue you’re not making today.',
+      f_mesas: 'tables', f_pers: 'people ordering', f_rot: 'times each table turns per day',
+      f_com: 'people see your menu per day', f_accept: 'out of every 10, accept', f_sug: 'suggestions per day',
+      f_each: 'each', f_day: 'per day', f_30: '× 30 days', f_month: 'per month',
+      acc_p2: 'Every assumption is deliberately <b style="color:var(--gold-bright)">counted low</b>: 2 people per table (not everyone pulls out their phone), 2 turns (tables usually fill more often) and only 1 in 10 accepts. In practice it’s usually quite a bit more — that’s why we call it the <b style="color:var(--gold-bright)">floor</b>. Best of all: with Qartilla you see the real numbers in your stats dashboard.',
+      sec_adjust: 'Adjust with the restaurant’s numbers',
+      lbl_mesas: 'Tables in the restaurant', hint_mesas: 'How many tables in total',
+      lbl_pers: 'People who order per table', hint_pers: 'We count low: not everyone pulls out their phone',
+      lbl_rot: 'Times each table is seated per day', hint_rot: 'Turnover. Open all day, it’s usually more',
+      lbl_conv: 'Out of 10 people, how many accept a suggestion', hint_conv: 'The smart waiter suggests; here we count just 1 in 10',
+      lbl_ticket: 'How much that suggestion adds', hint_ticket: 'A dessert, a drink, an add-on',
+      sec_flow: 'The math, step by step',
+      flow_pers: 'people see your menu per day',
+      flow_ups: 'accept a suggestion from the smart waiter',
+      flow_day: 'more in sales, every day',
+      sec_roi: 'What it costs vs. what it brings in',
+      roi_for: 'For every', roi_invest: 'invested, you get back', roi_sales: 'in sales.',
+      roi_pays: 'It pays for itself in', roi_ofmonth: 'of the month.',
+      pd_pre: 'Qartilla costs', pd_mid: 'per day',
+      cmp_less: 'less than one dish', cmp_dish: 'about the price of one dish',
+      cmp_night: 'a fraction of one night’s sales', cmp_weekend: 'a fraction of one weekend’s sales',
+      inv_pre: 'First month (setup included): you invest', inv_mid: 'it leaves you',
+      inv_post: 'in extra sales. From the second month on, just the monthly fee.',
+      acc_price: 'adjust plan pricing',
+      lbl_precio: 'Qartilla per month', hint_precio: 'Adjust it to the plan',
+      lbl_setup: 'Setup (one-time)', hint_setup: 'We load your menu with photos and leave it ready',
+      oppo_lbl: 'What you’ve already missed out on',
+      oppo_m1: 'in the last month', oppo_m12: 'in the last year', oppo_mn: 'in the last {n} months',
+      oppo_suffix: 'without a waiter that suggests',
+      seg_1: '1 month', seg_3: '3 months', seg_6: '6 months', seg_12: '1 year',
+      btn_pes: 'Pessimistic', btn_real: 'Realistic',
+      footnote: 'And this is the <b>minimum</b>. With more people per table, more turnover or a better ticket, the number goes <b>up</b>. Run the system for a month and see it yourself in the dashboard.',
+      sec_currency: 'Currency', cur_mxn: 'Pesos · MXN', cur_usd: 'Dollars · USD', cur_eur: 'Euros · EUR',
+      sec_lang: 'Language',
+      madein: 'Smart menu',
+      days_less: 'less than 1 day', day_one: 'day', day_many: 'days'
+    }
+  };
+
+  var lang = 'es';
+  try { var saved = localStorage.getItem('qartilla_lang'); if(saved==='en'||saved==='es'){ lang = saved; } } catch(e){}
+  function t(key){ return I18N[lang][key]; }
+
   var currency = 'MXN';
-  function peso(n){ return '$' + Math.round(n).toLocaleString(currency==='USD'?'en-US':'es-MX'); }
+  var CURRENCIES = ['MXN','USD','EUR'];
+
+  // Formateo con Intl (toLocaleString): € con separadores europeos cuando el
+  // idioma es ES (21.600 €) y formato anglo cuando es EN (€21,600); MXN/USD
+  // conservan el "$" de siempre. Moneda e idioma son independientes.
+  function money(n){
+    var v = Math.round(n), neg = v < 0;
+    if(neg){ v = -v; }
+    var locale = (lang==='en') ? 'en-US' : (currency==='EUR' ? 'es-ES' : 'es-MX');
+    var s = v.toLocaleString(locale);
+    var out = (currency==='EUR') ? (lang==='en' ? '€'+s : s+' €') : '$'+s;
+    return neg ? '−'+out : out;
+  }
 
   var ids = ['mesas','pers','rot','conv','ticket','precio','setup'];
 
-  // Rangos NATIVOS por moneda para los sliders de dinero (no es conversión por tasa)
+  // Rangos NATIVOS por moneda para los sliders de dinero (no es conversión por
+  // tasa). EUR derivado de USD (~0.92) redondeado a números limpios.
   var MONEY = {
-    ticket: { MXN:{min:20,   max:250,   step:5},   USD:{min:1,  max:20,   step:1}  },
-    precio: { MXN:{min:1500, max:30000, step:100},  USD:{min:100, max:5000, step:10} },
-    setup:  { MXN:{min:1500, max:20000, step:100},  USD:{min:100, max:2000, step:10} }
+    ticket: { MXN:{min:20,   max:250,   step:5},   USD:{min:1,   max:20,   step:1},  EUR:{min:1,   max:18,   step:1}  },
+    precio: { MXN:{min:1500, max:30000, step:100}, USD:{min:100, max:5000, step:10}, EUR:{min:100, max:4500, step:10} },
+    setup:  { MXN:{min:1500, max:20000, step:100}, USD:{min:100, max:2000, step:10}, EUR:{min:100, max:1800, step:10} }
   };
-  var moneyIds = ['ticket','precio','setup'];
 
   // Presets: los campos de dinero llevan un valor por moneda
-  var PES  = {mesas:30, pers:2, rot:2, conv:1, ticket:{MXN:60,USD:4}, precio:{MXN:5000,USD:500}, setup:{MXN:5000,USD:500}};
-  var REAL = {mesas:30, pers:3, rot:3, conv:2, ticket:{MXN:80,USD:7}, precio:{MXN:5000,USD:500}, setup:{MXN:5000,USD:500}};
+  var PES  = {mesas:30, pers:2, rot:2, conv:1, ticket:{MXN:60,USD:4,EUR:4}, precio:{MXN:5000,USD:500,EUR:450}, setup:{MXN:5000,USD:500,EUR:450}};
+  var REAL = {mesas:30, pers:3, rot:3, conv:2, ticket:{MXN:80,USD:7,EUR:6}, precio:{MXN:5000,USD:500,EUR:450}, setup:{MXN:5000,USD:500,EUR:450}};
   var scenario = 'PES';
 
   function setMoney(id, val){
@@ -297,9 +420,27 @@
     setMoney('ticket', p.ticket[cur]);
     setMoney('precio', p.precio[cur]);
     setMoney('setup',  p.setup[cur]);
-    $('curMXN').className = (cur==='MXN') ? 'on' : '';
-    $('curUSD').className = (cur==='USD') ? 'on' : '';
+    for(var c=0;c<CURRENCIES.length;c++){
+      $('cur'+CURRENCIES[c]).className = (cur===CURRENCIES[c]) ? 'on' : '';
+    }
     $('curTag').textContent = cur;
+    calc(false);
+  }
+
+  // Re-rotula TODA la UI en el idioma elegido y re-formatea (locale). No toca
+  // los valores de los sliders: cambiar idioma jamás resetea lo que moviste.
+  function applyLang(l){
+    lang = l;
+    try { localStorage.setItem('qartilla_lang', l); } catch(e){}
+    document.documentElement.lang = l;
+    document.title = t('title');
+    var nodes = document.querySelectorAll('[data-i18n]');
+    for(var i=0;i<nodes.length;i++){ nodes[i].textContent = t(nodes[i].getAttribute('data-i18n')); }
+    var htmlNodes = document.querySelectorAll('[data-i18n-html]');
+    for(var j=0;j<htmlNodes.length;j++){ htmlNodes[j].innerHTML = t(htmlNodes[j].getAttribute('data-i18n-html')); }
+    $('langES').className = (l==='es') ? 'on' : '';
+    $('langEN').className = (l==='en') ? 'on' : '';
+    $('chipText').textContent = (scenario==='PES') ? t('chip_pes') : t('chip_real');
     calc(false);
   }
 
@@ -315,7 +456,7 @@
     function step(){
       var p = Math.min(1,(now()-t0)/dur);
       var e = 1-Math.pow(1-p,3);
-      el.textContent = peso(from+(to-from)*e);
+      el.textContent = money(from+(to-from)*e);
       if(p<1){ tweenRAF = requestAnimationFrame(step); } else { tweenRAF = null; }
     }
     tweenRAF = requestAnimationFrame(step);
@@ -326,17 +467,18 @@
     el.style.setProperty('--fill', ((v-min)/(max-min)*100)+'%');
   }
 
+  // Umbrales por moneda (nativos, como los rangos) para la leyenda comparativa.
+  var CMP = {
+    MXN: [3000, 7500, 15000],
+    USD: [150, 400, 1500],
+    EUR: [140, 370, 1400]
+  };
   function priceCompare(p){
-    if(currency==='USD'){
-      if(p<150) return 'menos que un platillo';
-      if(p<400) return 'lo que cuesta un platillo';
-      if(p<1500) return 'una fracción de lo que vendes en una noche';
-      return 'una fracción de lo que vendes en un fin de semana';
-    }
-    if(p<3000) return 'menos que un platillo';
-    if(p<7500) return 'lo que cuesta un platillo';
-    if(p<15000) return 'una fracción de lo que vendes en una noche';
-    return 'una fracción de lo que vendes en un fin de semana';
+    var th = CMP[currency];
+    if(p<th[0]) return t('cmp_less');
+    if(p<th[1]) return t('cmp_dish');
+    if(p<th[2]) return t('cmp_night');
+    return t('cmp_weekend');
   }
 
   function calc(animate){
@@ -344,8 +486,8 @@
         conv=+$('conv').value, ticket=+$('ticket').value, precio=+$('precio').value, setup=+$('setup').value;
 
     $('vMesas').textContent=mesas; $('vPers').textContent=pers; $('vRot').textContent=rot;
-    $('vConv').textContent=conv; $('vTicket').textContent=peso(ticket);
-    $('vPrecio').textContent=peso(precio); $('vSetup').textContent=peso(setup);
+    $('vConv').textContent=conv; $('vTicket').textContent=money(ticket);
+    $('vPrecio').textContent=money(precio); $('vSetup').textContent=money(setup);
     for(var k=0;k<ids.length;k++){ fillTrack($(ids[k])); }
 
     var com = mesas*pers*rot;
@@ -356,39 +498,40 @@
 
     $('fPers').textContent=Math.round(com);
     $('fUps').textContent=Math.round(ups);
-    $('fDay').textContent=peso(day);
+    $('fDay').textContent=money(day);
 
     if(animate){
       tween($('heroNum'), lastHero, month);
       var h=$('heroNum'); h.className='bignum pulse'; setTimeout(function(){ h.className='bignum'; },180);
     } else {
       if(tweenRAF){ cancelAnimationFrame(tweenRAF); tweenRAF=null; }
-      $('heroNum').textContent=peso(month);
+      $('heroNum').textContent=money(month);
     }
     lastHero=month;
-    $('yearNum').textContent=peso(year);
+    $('yearNum').textContent=money(year);
 
     $('eMesas').textContent=mesas; $('ePers').textContent=pers; $('eRot').textContent=rot;
     $('eCom').textContent=Math.round(com); $('eConv').textContent=conv;
-    $('eUps').textContent=Math.round(ups); $('eTicket').textContent=peso(ticket);
-    $('eDay').textContent=peso(day); $('eMonth').textContent=peso(month);
+    $('eUps').textContent=Math.round(ups); $('eTicket').textContent=money(ticket);
+    $('eDay').textContent=money(day); $('eMonth').textContent=money(month);
 
-    $('pdDay').textContent=peso(precio/30);
+    $('pdDay').textContent=money(precio/30);
     $('pdCompare').textContent=priceCompare(precio);
 
     var x = precio>0 ? month/precio : 0;
-    $('roiX').textContent=(x>=10?Math.round(x):x.toFixed(1))+'\u00d7';
-    $('roiPer').textContent=peso(x);
+    $('roiX').textContent=(x>=10?Math.round(x):x.toFixed(1))+'×';
+    $('roiOne').textContent=money(1);
+    $('roiPer').textContent=money(x);
     var d2p = day>0 ? precio/day : 0;
-    $('roiDays').textContent = d2p<1 ? 'menos de 1 día' : '~'+Math.max(1,Math.round(d2p))+(Math.round(d2p)===1?' día':' días');
+    $('roiDays').textContent = d2p<1 ? t('days_less') : '~'+Math.max(1,Math.round(d2p))+' '+(Math.round(d2p)===1?t('day_one'):t('day_many'));
 
     var first = precio+setup;
-    $('invFirst').textContent=peso(first);
-    $('invNet').textContent=peso(month-first);
+    $('invFirst').textContent=money(first);
+    $('invNet').textContent=money(month-first);
 
-    $('oppoNum').textContent=peso(month*oppoMonths);
-    var txt = oppoMonths===1?'en el último mes':(oppoMonths===12?'en el último año':'en los últimos '+oppoMonths+' meses');
-    $('oppoSub').textContent=txt+' sin un mesero que sugiera';
+    $('oppoNum').textContent=money(month*oppoMonths);
+    var txt = oppoMonths===1 ? t('oppo_m1') : (oppoMonths===12 ? t('oppo_m12') : t('oppo_mn').replace('{n}', oppoMonths));
+    $('oppoSub').textContent=txt+' '+t('oppo_suffix');
   }
 
   // Programador por frame: una sola actualización por cuadro (suave y eficiente en móvil)
@@ -405,7 +548,7 @@
     setMoney('ticket', p.ticket[currency]);
     setMoney('precio', p.precio[currency]);
     setMoney('setup',  p.setup[currency]);
-    $('chipText').textContent = pessimist ? 'Escenario pesimista · contando bajo' : 'Escenario realista · lo más probable';
+    $('chipText').textContent = pessimist ? t('chip_pes') : t('chip_real');
     $('btnPes').className = pessimist ? 'on' : '';
     $('btnReal').className = pessimist ? '' : 'on';
     calc(true);
@@ -425,6 +568,9 @@
   $('btnReal').addEventListener('click', function(){ setPreset(REAL,false); });
   $('curMXN').addEventListener('click', function(){ if(currency!=='MXN'){ applyCurrency('MXN'); } });
   $('curUSD').addEventListener('click', function(){ if(currency!=='USD'){ applyCurrency('USD'); } });
+  $('curEUR').addEventListener('click', function(){ if(currency!=='EUR'){ applyCurrency('EUR'); } });
+  $('langES').addEventListener('click', function(){ if(lang!=='es'){ applyLang('es'); } });
+  $('langEN').addEventListener('click', function(){ if(lang!=='en'){ applyLang('en'); } });
   $('accHead').addEventListener('click', function(){ $('acc').classList.toggle('open'); });
   $('accPrecioHead').addEventListener('click', function(){ $('accPrecio').classList.toggle('open'); });
 
@@ -439,7 +585,8 @@
   }
 
   for(var k2=0;k2<ids.length;k2++){ fillTrack($(ids[k2])); }
-  calc(false);
+  // Idioma persistido (default ES) — re-rotula y dispara el primer calc().
+  applyLang(lang);
 </script>
 </body>
 </html>
